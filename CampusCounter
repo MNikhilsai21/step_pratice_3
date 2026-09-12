@@ -1,0 +1,26 @@
+class CampusCounter {
+    // Instance Member: Every object gets its own copy
+    String studentName;
+    
+    // Static (Class) Member: Shared across all instances globally
+    static int globalStudentCount = 0;
+
+    public CampusCounter(String name) {
+        this.studentName = name;
+        globalStudentCount++; // Updates the shared class variable
+    }
+}
+
+public class StaticVsInstanceDemo {
+    public static void main(String[] args) {
+        CampusCounter s1 = new CampusCounter("Ravi");
+        CampusCounter s2 = new CampusCounter("Anitha");
+
+        // Verifying Instance values (Unique ownership)
+        System.out.println("Student 1 Name: " + s1.studentName);
+        System.out.println("Student 2 Name: " + s2.studentName);
+
+        // Verifying Static value (Class ownership - shared)
+        System.out.println("Global Student Enrollment Count: " + CampusCounter.globalStudentCount);
+    }
+}
