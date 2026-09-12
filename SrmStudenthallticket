@@ -1,0 +1,21 @@
+class SrmStudent {
+    // 1. Core State Fields (Data)
+    String name;
+    String regNo;
+    int attendance;
+
+    // 2. Core Functional Method (Behavior)
+    void checkExamEligibility() {
+        if (attendance >= 75) {
+            System.out.println(name + " (" + regNo + ") - Hall ticket released");
+        } else {
+            System.out.println(name + " (" + regNo + ") - Detained");
+        }
+    }
+}
+
+public class SyntaxDemo {
+    public static void main(String[] args) {
+        System.out.println("SrmStudent class defined with proper syntax formatting.");
+    }
+}
