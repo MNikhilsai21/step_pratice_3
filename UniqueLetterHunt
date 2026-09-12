@@ -1,0 +1,38 @@
+public class UniqueLetterHunt {
+
+    public static char findFirstNonRepeatingChar(String text) {
+        // Assuming extended ASCII framework characters (256 positions)
+        int[] frequencyMap = new int[256];
+
+        // Step 1: Compute frequencies
+        for (int i = 0; i < text.length(); i++) {
+            frequencyMap[text.charAt(i)]++;
+        }
+
+        // Step 2: Scan string left-to-right for early exit optimization
+        for (int i = 0; i < text.length(); i++) {
+            if (frequencyMap[text.charAt(i)] == 1) {
+                return text.charAt(i);
+            }
+        }
+
+        // Return a null character marker if everything repeats
+        return '\0'; 
+    }
+
+    public static void runTest(String text) {
+        char result = findFirstNonRepeatingChar(text);
+        System.out.println("Input: \"" + text + "\"");
+        if (result != '\0') {
+            System.out.println("First Non-Repeating Character: '" + result + "'");
+        } else {
+            System.out.println("No Non-Repeating Character Found");
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        runTest("swiss");
+        runTest("aabbcc");
+    }
+}
