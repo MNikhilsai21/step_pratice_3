@@ -1,0 +1,21 @@
+public class Problem2 {
+    static String findDuplicateTeam(String[] teamNames) {
+        // Compare every name against every subsequent name using plain nested loops
+        for (int i = 0; i < teamNames.length; i++) {
+            for (int j = i + 1; j < teamNames.length; j++) {
+                if (teamNames[i].equals(teamNames[j])) {
+                    return "Duplicate Found: " + teamNames[i];
+                }
+            }
+        }
+        return "No Duplicates Found";
+    }
+
+    public static void main(String[] args) {
+        String[] sample1 = {"ByteForce", "CodeCrafters", "ByteForce"};
+        System.out.println(findDuplicateTeam(sample1));
+
+        String[] sample2 = {"ByteForce", "CodeCrafters", "NullPointers"};
+        System.out.println(findDuplicateTeam(sample2));
+    }
+}
