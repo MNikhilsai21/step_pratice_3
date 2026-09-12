@@ -1,0 +1,12 @@
+public boolean containsDuplicate(int[] nums) {
+    // Compare every element at position i against every later element at position j
+    for (int i = 0; i < nums.length; i++) {
+        for (int j = i + 1; j < nums.length; j++) {
+            // Early exit as soon as any matching pair is found
+            if (nums[i] == nums[j]) {
+                return true;
+            }
+        }
+    }
+    return false; // Return false if no duplicate entries exist
+}
