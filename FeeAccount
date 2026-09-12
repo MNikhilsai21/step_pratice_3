@@ -1,0 +1,38 @@
+class FeeAccount {
+    private String regNo; 
+    private double totalFee;
+    private double amountPaid; // Secure: Encapsulated hidden data
+
+    public FeeAccount(String regNo, double totalFee) {
+        this.regNo = regNo;
+        this.totalFee = totalFee;
+    }
+
+    public void pay(double amount) {
+        if (amount <= 0) { // Business rule verification logic
+            System.out.println("Rejected: Invalid amount " + amount);
+            return;
+        }
+        this.amountPaid += amount;
+        System.out.println("Rs " + amount + " processed for " + regNo);
+    }
+
+    public double getDue() {
+        return totalFee - amountPaid;
+    }
+}
+
+// Extensibility: Creating subclasses without modifying base code
+class HostelFeeAccount extends FeeAccount {
+    public HostelFeeAccount(String regNo, double totalFee) {
+        super(regNo, totalFee);
+    }
+}
+
+public class OopBenefitsDemo {
+    public static void main(String[] args) {
+        HostelFeeAccount account = new HostelFeeAccount("RA2311003010123", 200000);
+        account.pay(50000);
+        // account.amountPaid = 200000; // COMPILER ERROR: Safeguarded by 'private'
+    }
+}
