@@ -1,0 +1,88 @@
+import java.util.Arrays;
+
+class Candidate implements Comparable<Candidate> {
+    private String name;
+    private double cgpa;
+    private int codingScore;
+
+    public Candidate(String name, double cgpa, int codingScore) {
+        this.name = name;
+        this.cgpa = cgpa;
+        this.codingScore = codingScore;
+    }
+
+    public String getName() { return name; }
+    public double getCgpa() { return cgpa; }
+    public int getCodingScore() { return codingScore; }
+
+    // Defined rule thresholds matching the example logic:
+    // Direct clear bar: CGPA >= 7.5
+    static boolean isEligible(double cgpa) {
+        return cgpa >= 7.5;
+    }
+
+    // Borderline clear bar: CGPA >= 6.5 AND strong codingScore >= 60
+    static boolean isEligible(double cgpa, int codingScore) {
+        return isEligible(cgpa) || (cgpa >= 6.5 && codingScore >= 60);
+    }
+
+    // Calculate a composite score based on sample output alignment: (CGPA * 10) + codingScore
+    public double getCompositeScore() {
+        return (this.cgpa * 10) + this.codingScore;
+    }
+
+    // Sort descending by composite score
+    @Override
+    public int compareTo(Candidate other) {
+        return Double.compare(other.getCompositeScore(), this.getCompositeScore());
+    }
+}
+
+public class Problem5 {
+    static String shortlistAndRank(Candidate[] candidates) {
+        // Step 1: Count eligible candidates to dynamically size the temporary filter array
+        int count = 0;
+        for (Candidate c : candidates) {
+            if (Candidate.isEligible(c.getCgpa(), c.getCodingScore())) {
+                count++;
+            }
+        }
+
+        // Step 2: Populating the shortlisting array
+        Candidate[] shortlisted = new Candidate[count];
+        int index = 0;
+        for (Candidate c : candidates) {
+            if (Candidate.isEligible(c.getCgpa(), c.getCodingScore())) {
+                shortlisted[index++] = c;
+            }
+        }
+
+        // Step 3: Sort entirely using native Java sorting mechanism driven by compareTo()
+        Arrays.sort(shortlisted);
+
+        // Step 4: Formatting the final leaderboard string output
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < shortlisted.length; i++) {
+            Candidate c = shortlisted[i];
+            result.append(i + 1).append(". ")
+                  .append(c.getName()).append(" (")
+                  .append(c.getCompositeScore()).append(")");
+            if (i < shortlisted.length - 1) {
+                result.append(" | ");
+            }
+        }
+
+        return result.toString();
+    }
+
+    public static void main(String[] args) {
+        Candidate[] candidates = {
+            new Candidate("Aisha", 8.2, 40),
+            new Candidate("Rohit", 6.8, 65),
+            new Candidate("Meena", 6.0, 90),
+            new Candidate("Karan", 7.5, 20)
+        };
+
+        System.out.println(shortlistAndRank(candidates));
+    }
+}
