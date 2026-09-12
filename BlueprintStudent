@@ -1,0 +1,16 @@
+// The Class: Simply a blueprint/definition. Occupies no runtime space.
+class BlueprintStudent {
+    String typeLabel = "SRM Student Profile";
+}
+
+public class ClassVsObjectDemo {
+    public static void main(String[] args) {
+        // The Objects: Concrete instances holding independent heap values
+        BlueprintStudent object1 = new BlueprintStudent(); 
+        BlueprintStudent object2 = new BlueprintStudent();
+        
+        System.out.println("Class references initialized distinct object instances.");
+        System.out.println("Object 1 Hash: " + object1.hashCode());
+        System.out.println("Object 2 Hash: " + object2.hashCode());
+    }
+}
