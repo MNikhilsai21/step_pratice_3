@@ -1,0 +1,59 @@
+public class PalindromeToolkit {
+
+    // Approach 1: Iterative Comparison
+    public static boolean isPalindromeIterative(String text) {
+        if (text == null) return false;
+        int left = 0;
+        int right = text.length() - 1;
+        
+        while (left < right) {
+            if (text.charAt(left) != text.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+
+    // Approach 2: Recursive Check
+    public static boolean isPalindromeRecursive(String text) {
+        if (text == null) return false;
+        if (text.length() <= 1) return true;
+        
+        if (text.charAt(0) != text.charAt(text.length() - 1)) {
+            return false;
+        }
+        return isPalindromeRecursive(text.substring(1, text.length() - 1));
+    }
+
+    // Approach 3: Array Reversal Check
+    public static boolean isPalindromeArrayReversal(String text) {
+        if (text == null) return false;
+        char[] original = text.toCharArray();
+        char[] reversed = new char[original.length];
+        
+        for (int i = 0; i < original.length; i++) {
+            reversed[i] = original[original.length - 1 - i];
+        }
+        
+        String reversedStr = new String(reversed);
+        return text.equals(reversedStr);
+    }
+
+    private static void verifyToken(String text) {
+        String cleanText = text.replaceAll("\\s+", "").toLowerCase(); // optional normalization
+        
+        String iterResult = isPalindromeIterative(cleanText) ? "Palindrome" : "Not Palindrome";
+        String recurResult = isPalindromeRecursive(cleanText) ? "Palindrome" : "Not Palindrome";
+        String revResult = isPalindromeArrayReversal(cleanText) ? "Palindrome" : "Not Palindrome";
+        
+        System.out.println("Input: \"" + text + "\"");
+        System.out.printf("Iterative: %s | Recursive: %s | Array Reversal: %s\n\n", iterResult, recurResult, revResult);
+    }
+
+    public static void main(String[] args) {
+        verifyToken("madam");
+        verifyToken("hello");
+    }
+}
