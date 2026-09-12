@@ -1,0 +1,16 @@
+class SmartPhone {
+    String model;
+}
+
+public class NewKeywordDemo {
+    public static void main(String[] args) {
+        // 1. 'new SmartPhone()' allocates memory on Heap 
+        // 2. 'SmartPhone myPhone' sets up pointer on Stack
+        // 3. '=' binds the stack reference to the heap object memory address
+        SmartPhone myPhone = new SmartPhone();
+        
+        // Using the dot operator to modify states
+        myPhone.model = "iPhone 15";
+        System.out.println("Object referenced at memory location, Model: " + myPhone.model);
+    }
+}
