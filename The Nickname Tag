@@ -1,0 +1,18 @@
+public class NameTag {
+    // Requirements: Immutable fields fixed inside the constructor
+    private final String firstName;
+    private final String lastNameInitial;
+
+    public NameTag(String fullName) {
+        // Splitting text apart wherever a space appears
+        String[] parts = fullName.split(" ");
+        this.firstName = parts[0];
+        // Safely extract the first letter of the last name and add a period
+        this.lastNameInitial = parts[1].substring(0, 1) + ".";
+    }
+
+    // Returns pre-built nickname dynamically or via fields without re-splitting
+    public String getNickname() {
+        return this.firstName + " " + this.lastNameInitial;
+    }
+}
