@@ -1,0 +1,24 @@
+public class Locker {
+    // Requirements: Final locker number and a strictly write-only code (no getter)
+    private final int lockerNumber;
+    private String combinationCode;
+
+    public Locker(int lockerNumber, String initialCode) {
+        this.lockerNumber = lockerNumber;
+        this.combinationCode = initialCode;
+    }
+
+    // Change the code only if the current one is provided correctly
+    public void changeCode(String currentCode, String newCode) {
+        if (this.combinationCode.equals(currentCode)) {
+            this.combinationCode = newCode;
+            System.out.println("success");
+        } else {
+            System.out.println("rejected, code is still \"" + this.combinationCode + "\"");
+        }
+    }
+
+    public int getLockerNumber() {
+        return this.lockerNumber;
+    }
+}
