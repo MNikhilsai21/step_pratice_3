@@ -1,0 +1,37 @@
+public class PiggyBank {
+    // Requirements: Private amount and a final ID fixed at creation
+    private final String id;
+    private double savings;
+
+    public PiggyBank(String id) {
+        this.id = id;
+        this.savings = 0.0; // Starts at 0 savings
+    }
+
+    // Depositing adds exactly that amount
+    public void deposit(double amount) {
+        if (amount > 0) {
+            this.savings += amount;
+            System.out.println("savings = " + this.savings);
+        }
+    }
+
+    // Withdrawing more than what's saved leaves the amount unchanged
+    public void withdraw(double amount) {
+        if (amount > this.savings) {
+            System.out.println("rejected, savings stays " + this.savings);
+        } else if (amount > 0) {
+            this.savings -= amount;
+            System.out.println("savings = " + this.savings);
+        }
+    }
+
+    // Expose current savings but no direct way to set it
+    public double getSavings() {
+        return this.savings;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+}
