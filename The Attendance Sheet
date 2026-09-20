@@ -1,0 +1,37 @@
+public class AttendanceSheet {
+    // Requirements: Private array, no duplicate inputs, and hidden full list
+    private final String[] presentStudents;
+    private int presentCount;
+
+    public AttendanceSheet(int maxClassSize) {
+        this.presentStudents = new String[maxClassSize];
+        this.presentCount = 0;
+    }
+
+    // Mark a student present (preventing duplicate inputs)
+    public void markPresent(String studentName) {
+        if (isPresent(studentName)) {
+            return; // Skip adding if already present
+        }
+        
+        if (presentCount < presentStudents.length) {
+            presentStudents[presentCount] = studentName;
+            presentCount++;
+        }
+    }
+
+    // Expose only the current filled total
+    public int getPresentCount() {
+        return this.presentCount;
+    }
+
+    // Check if one specific name is present internally without exposing the array
+    public boolean isPresent(String studentName) {
+        for (int i = 0; i < presentCount; i++) {
+            if (presentStudents[i].equalsIgnoreCase(studentName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
