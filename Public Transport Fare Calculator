@@ -1,0 +1,55 @@
+import sys
+
+class TransportJourney:
+    def calculate_fare(self, distance: float, *args) -> float:
+        raise NotImplementedError
+
+class BusJourney(TransportJourney):
+    def calculate_fare(self, distance: float, *args) -> float:
+        fare = 2.0 + (0.10 * distance)
+        return min(fare, 10.0) # Maximum boundary cap rule
+
+class TrainJourney(TransportJourney):
+    def calculate_fare(self, distance: float, *args) -> float:
+        return 3.0 + (0.15 * distance)
+
+class MetroJourney(TransportJourney):
+    def calculate_fare(self, distance: float, *args) -> float:
+        peak_factor = args[0]
+        return (1.50 + (0.20 * distance)) * peak_factor
+
+def transport_factory(t_type: str) -> TransportJourney:
+    mapping = {
+        "BUS": BusJourney,
+        "TRAIN": TrainJourney,
+        "METRO": MetroJourney
+    }
+    return mapping[t_type]()
+
+def solve_transit_system():
+    input_data = sys.stdin.read().splitlines()
+    if not input_data:
+        return
+    
+    n = int(input_data[0].strip())
+    grand_total = 0.0
+    
+    for i in range(1, n + 1):
+        parts = input_data[i].split()
+        t_type = parts[0].strip()
+        distance = float(parts[1])
+        
+        extra_args = []
+        if len(parts) > 2:
+            extra_args.append(float(parts[2]))
+            
+        transit = transport_factory(t_type)
+        fare = transit.calculate_fare(distance, *extra_args)
+        grand_total += fare
+        
+        print(f"{t_type}: {fare:.2f}")
+        
+    print(f"Total: {grand_total:.2f}")
+
+if __name__ == "__main__":
+    solve_transit_system()
