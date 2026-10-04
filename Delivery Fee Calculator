@@ -1,0 +1,55 @@
+import sys
+
+class DeliveryRequest:
+    def calculate_fee(self, weight: float, distance: float, *args) -> float:
+        raise NotImplementedError
+
+class StandardDelivery(DeliveryRequest):
+    def calculate_fee(self, weight: float, distance: float, *args) -> float:
+        return 5.0 + (0.50 * weight) + (0.10 * distance)
+
+class ExpressDelivery(DeliveryRequest):
+    def calculate_fee(self, weight: float, distance: float, *args) -> float:
+        return 15.0 + (1.00 * weight) + (0.20 * distance)
+
+class InternationalDelivery(DeliveryRequest):
+    def calculate_fee(self, weight: float, distance: float, *args) -> float:
+        customs_fee = args[0]
+        return 25.0 + (2.00 * weight) + (0.50 * distance) + customs_fee
+
+def delivery_factory(delivery_type: str) -> DeliveryRequest:
+    mapping = {
+        "STANDARD": StandardDelivery,
+        "EXPRESS": ExpressDelivery,
+        "INTERNATIONAL": InternationalDelivery
+    }
+    return mapping[delivery_type]()
+
+def solve_delivery_system():
+    input_data = sys.stdin.read().splitlines()
+    if not input_data:
+        return
+    
+    n = int(input_data[0].strip())
+    grand_total = 0.0
+    
+    for i in range(1, n + 1):
+        parts = input_data[i].split()
+        del_type = parts[0].strip()
+        weight = float(parts[1])
+        distance = float(parts[2])
+        
+        extra_args = []
+        if len(parts) > 3:
+            extra_args.append(float(parts[3]))
+            
+        handler = delivery_factory(del_type)
+        fee = handler.calculate_fee(weight, distance, *extra_args)
+        grand_total += fee
+        
+        print(f"{del_type}: {fee:.2f}")
+        
+    print(f"Total: {grand_total:.2f}")
+
+if __name__ == "__main__":
+    solve_delivery_system()
