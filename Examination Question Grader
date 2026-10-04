@@ -1,0 +1,64 @@
+import sys
+import re
+
+class ExamQuestion:
+    def grade(self, correct: str, student: str, points: int) -> float:
+        raise NotImplementedError
+
+class MCQQuestion(ExamQuestion):
+    def grade(self, correct: str, student: str, points: int) -> float:
+        return float(points) if correct == student else 0.0
+
+class TFQuestion(ExamQuestion):
+    def grade(self, correct: str, student: str, points: int) -> float:
+        return float(points) if correct == student else 0.0
+
+class EssayQuestion(ExamQuestion):
+    def grade(self, correct: str, student: str, points: int) -> float:
+        # Split keywords by commas and scrub whitespace
+        keywords = [k.strip().lower() for k in correct.split(',')]
+        student_lower = student.lower()
+        
+        # Count unique keywords present in the text response
+        match_count = sum(1 for kw in keywords if kw in student_lower)
+        
+        if match_count >= 2:
+            return points * 0.75
+        elif match_count == 1:
+            return points * 0.50
+        return 0.0
+
+def question_factory(q_type: str) -> ExamQuestion:
+    mapping = {"MCQ": MCQQuestion, "TF": TFQuestion, "ESSAY": EssayQuestion}
+    return mapping[q_type]()
+
+def solve_exam_grader():
+    input_data = sys.stdin.read().splitlines()
+    if not input_data:
+        return
+    
+    n = int(input_data[0].strip())
+    total_score = 0.0
+    
+    for i in range(1, n + 1):
+        line = input_data[i].strip()
+        # Clean parsing using regex to properly isolate strings captured inside quotes
+        tokens = re.findall(r'[^"\s]+|"[^"]*"', line)
+        tokens = [t.strip('"') for t in tokens]
+        
+        q_type = tokens[0]
+        # Text tokens[1] can be bypassed as it's the descriptive body text
+        correct = tokens[2]
+        student = tokens[3]
+        points = int(tokens[4])
+        
+        grader = question_factory(q_type)
+        score = grader.grade(correct, student, points)
+        total_score += score
+        
+        print(f"{q_type}: {score:.2f}")
+        
+    print(f"Total Score: {total_score:.2f}")
+
+if __name__ == "__main__":
+    solve_exam_grader()
