@@ -1,0 +1,50 @@
+import sys
+from datetime import datetime, timedelta
+
+class LibraryItem:
+    def get_borrow_duration(self) -> int:
+        raise NotImplementedError
+
+class BookItem(LibraryItem):
+    def get_borrow_duration(self) -> int:
+        return 14
+
+class DVDItem(LibraryItem):
+    def get_borrow_duration(self) -> int:
+        return 7
+
+class MagazineItem(LibraryItem):
+    def get_borrow_duration(self) -> int:
+        return 3
+
+def library_item_factory(item_type: str) -> LibraryItem:
+    mapping = {
+        "BOOK": BookItem,
+        "DVD": DVDItem,
+        "MAGAZINE": MagazineItem
+    }
+    return mapping[item_type]()
+
+def solve_library_system():
+    input_data = sys.stdin.read().splitlines()
+    if not input_data:
+        return
+    
+    n = int(input_data[0].strip())
+    current_date = datetime.strptime("2023-10-26", "%Y-%m-%d")
+    
+    for i in range(1, n + 1):
+        line = input_data[i].strip()
+        # Find first space separating item type from the title string
+        space_idx = line.find(' ')
+        item_type = line[:space_idx].strip()
+        # Strip outer quotes from the title
+        title = line[space_idx+1:].strip().strip('"')
+        
+        item = library_item_factory(item_type)
+        due_date = current_date + timedelta(days=item.get_borrow_duration())
+        
+        print(f"{title}: {due_date.strftime('%Y-%m-%d')}")
+
+if __name__ == "__main__":
+    solve_library_system()
